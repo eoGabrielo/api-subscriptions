@@ -20,7 +20,7 @@ exports.register = async (req, res) => {
 
     const exists = await User.findOne({ email });
     if (exists) {
-      res.status(409).json({ message: "E-mail já cadastrado" });
+     return res.status(409).json({ message: "E-mail já cadastrado" });
     };
 
     const user = await User.create({ nome, email, senha });
@@ -30,7 +30,7 @@ exports.register = async (req, res) => {
     const accessToken = signAccessToken(payload);
     const refreshToken = signRefreshToken({ id: payload.id, role: payload.role });
 
-    setRefreshCookie(res, refreshToken);
+    setRefreshCookie(res, refreshToken);//Salvar token no cookie
 
     return res.json({
       message: "Login realizado com sucesso!",
