@@ -49,12 +49,12 @@ exports.login = async (req, res) => {
 
     const user = await User.findOne({ email }).select("+senha");//".select("+senha") tras a senha junto. (No model isso ta bloqueado)"
     if (!user) {
-      return res.statu(400).json({ message: "Credenciais invalidas!" });
+      return res.status(400).json({ message: "Credenciais invalidas!" });
     }
 
     const isMatch = await user.comparePassword(senha, user.senha);//Função exportada do model/User.js, compara senhas.
     if (!isMatch) {
-      return res.statu(400).json({ message: "Credenciais invalidas!" });
+      return res.status(400).json({ message: "Credenciais invalidas!" });
     }
 
     const payload = { id: user._id.toString(), email: user.email, nome: user.nome, role: user.role };
