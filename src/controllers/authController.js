@@ -20,7 +20,7 @@ exports.register = async (req, res) => {
 
     const exists = await User.findOne({ email });
     if (exists) {
-     return res.status(409).json({ message: "E-mail já cadastrado" });
+      return res.status(409).json({ message: "E-mail já cadastrado" });
     };
 
     const user = await User.create({ nome, email, senha });
@@ -32,10 +32,10 @@ exports.register = async (req, res) => {
 
     setRefreshCookie(res, refreshToken);//Salvar token no cookie
 
-    return res.json({
-      message: "Login realizado com sucesso!",
+    return res.status(201).json({
+      message: "Usuário registrado com sucesso",
       accessToken,
-      user: { id: user._id, nome: user.nome, email: user.email, role: user.role }
+      user: { id: user._id, nome: user.nome, email: user.email, role: user.role },
     });
 
   } catch (err) {
@@ -43,10 +43,33 @@ exports.register = async (req, res) => {
   }
 }
 
-exports.refresh = async (req, res) => {
+exports.login = async (req, res) => {
   try {
+    const { email, senha } = req.body;
 
+    const user = await User.findOne({ email }).select("+senha");//".select("+senha") tras a senha junto. (No model isso ta bloqueado)"
+    if (!user) {
+      return res.statu(400).json({ message: "Credenciais invalidas!" });
+    }
+
+    const isMatch = await user.comparePassword(senha, user.senha);//Função exportada do model/User.js, compara senhas.
+    if (!isMatch) {
+      return res.statu(400).json({ message: "Credenciais invalidas!" });
+    }
+
+    const payload = { id: user._id.toString(), email: user.email, nome: user.nome, role: user.role };
+    const accessToken = signAccessToken(payload);
+    const refreshToken = signRefreshToken({ id: payload.id, role: payload.role });
+
+    setRefreshCookie(res, refreshToken);
+
+    return res.json({message: "Login realizado com sucesso",
+      accessToken,
+      user: { id: user._id, nome: user.nome, email: user.email, role: user.role },
+    });
   } catch (err) {
-
+    return res.status(500).json({ message: "Erro ao fazer login", error: err.message });
   }
+
 }
+

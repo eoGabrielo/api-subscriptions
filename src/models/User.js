@@ -20,8 +20,8 @@ userSchema.pre("save", async function (next) {
 });
 
 //Função: para comparar senha digitada com a do banco de dados.
-userSchema.methods.comparePassword = function (candidatePassword) {
-  return bcrypt.compare(candidatePassword, this.senha);
+userSchema.methods.comparePassword = function (senhaDigitada, senhaBanco) {
+  return bcrypt.compare(senhaDigitada, senhaBanco);
 };
 
 module.exports = mongoose.model("User", userSchema);
