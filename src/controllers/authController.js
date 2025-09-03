@@ -96,5 +96,16 @@ exports.refresh = async(req, res) =>{
 
 }
 
+exports.me = async (req, res) => {
+  //req.user vem do controller authController da função verifyToken
+  return res.json({user: req.user})
+}
+
+exports.logout = async(req, res) =>{
+  //Limpar cookie do RefreshToken
+  res.clearCookie("regfreshToken", {path: "api/auth"});
+  res.json({message: "Logout realizado!"});
+}
+
 
 
