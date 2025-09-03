@@ -13,8 +13,8 @@ app.use(cookieParser())
 app.use(cors());
 app.use(express.json()); //permite JSON no body
 
-app.use("/api/auth", authRoutes)
-app.use("/api", adminRoutes)
+app.use("/api/auth", authRoutes);
+app.use("/api", adminRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "API Subscriptions rodando" });
