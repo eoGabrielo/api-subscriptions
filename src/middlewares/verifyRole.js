@@ -3,8 +3,9 @@
 function verifyRole(role){
     return (req, res, next) =>{
         if(!req.user){
-            return res.status(401).json({message: "Usuário não autenticado, role invalido!"});
+            return res.status(401).json({message: "Usuário não autenticado, role invalido ou não existente!"});
         }
+
 
         if(req.user.role !== role){
             //Vamos trabalhar com essa func "verifyRole", chamando para comparar se for difente do role aceito no endpoint.

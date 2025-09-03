@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const cookieParser = require("cookie-parser");
 const authController = require("../controllers/authController.js");
-const verifyToken = require("../middlewares/auth.js");
+const verifyToken = require("../middlewares/verifyToken.js");
 
 //habilitar cookieParse
 router.use(cookieParser());
