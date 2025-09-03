@@ -75,9 +75,26 @@ exports.login = async (req, res) => {
 
 exports.refresh = async(req, res) =>{
   try{
-    
-  }catch(err){
+    const tokenFromCookie = req.cookie?.refreshToken;
+    if(!tokenFromCookie){
+      return res.status(401).json({message: "Refresh token ausente"});
+    }
 
+    const jwt = require("jsonwebtoken");
+    const decoded = jwt.verify(tokenFromCookie, process.env.REFRESH_SECRET);
+
+    //Gerar novo Accesse/Refresh token com o payload id e role
+    const accessToken = signAccessToken({id: decoded.id, role: decoded.role});//Token headers
+    const newRefresh = signRefreshToken({id: decoded.id, role: decoded.role});//Token cookie
+    setRefreshCookie(res, newRefresh);//Renovar/Criar Token no cookie
+
+    return res.json({accessToken});
+
+  }catch(err){
+    return res.statu(401).json({message: "Refresh token invalido ou expirado"});
   }
+
 }
+
+
 
