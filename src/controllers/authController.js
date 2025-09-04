@@ -57,7 +57,7 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Credenciais invalidas!" });
     }
 
-    const payload = { id: user._id.toString(), email: user.email, nome: user.nome, role: user.role };
+    const payload = { id: user._id.toString(), email: user.email, nome: user.nome, role: user.role, plan: user.plan  };
     const accessToken = signAccessToken(payload);
     const refreshToken = signRefreshToken({ id: payload.id, role: payload.role });
 
@@ -65,7 +65,7 @@ exports.login = async (req, res) => {
 
     return res.json({message: "Login realizado com sucesso",
       accessToken,
-      user: { id: user._id, nome: user.nome, email: user.email, role: user.role },
+      user: { id: user._id, nome: user.nome, email: user.email, role: user.role, plan: user.plan, planExpiresAt: user.planExpiresAt},
     });
   } catch (err) {
     return res.status(500).json({ message: "Erro ao fazer login", error: err.message });
