@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Meu Perfil</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Meu Perfil</h1>
+    <button id="getMe">Carregar dados</button>
+    <p id="msg"></p>
+  </div>
+
+  <script>
+    document.getElementById("getMe").addEventListener("click", async () => {
+      const token = localStorage.getItem("accessToken");
+      const res = await fetch("/api/auth/me", {
+        headers: { Authorization: "Bearer " + token }
+      });
+
+      const data = await res.json();
+      document.getElementById("msg").innerText = JSON.stringify(data, null, 2);
+    });
+  </script>
+</body>
+</html>

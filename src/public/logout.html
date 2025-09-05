@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Logout</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Sair</h1>
+    <button id="logout">Logout</button>
+    <p id="msg"></p>
+  </div>
+
+  <script>
+    document.getElementById("logout").addEventListener("click", async () => {
+      const res = await fetch("/api/auth/logout", { method: "POST" });
+      localStorage.removeItem("accessToken");
+
+      const data = await res.json();
+      document.getElementById("msg").innerText = JSON.stringify(data, null, 2);
+    });
+  </script>
+</body>
+</html>

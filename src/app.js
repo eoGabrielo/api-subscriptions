@@ -6,6 +6,7 @@ const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes")
 const videoRoutes = require("./routes/videoRoutes");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 
 
 const app = express();
@@ -13,6 +14,7 @@ const app = express();
 app.use(cookieParser())
 app.use(cors());
 app.use(express.json()); //permite JSON no body
+app.use(express.static(path.join(__dirname, "public"))); //Abrir arquivos estáticos da pasta public
 
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #45a04981;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(255, 255, 255);
+            width: 400px;
+            padding: 10px;
+
+        }
+
+        .containerForm {
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+
+        h1 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        p {
+            max-width: 100%;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        #msg {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #555;
+            word-wrap: break-word;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <form id="loginForm" class="containerForm">
+            <input type="email" id="email" placeholder="Email" required />
+            <input type="password" id="senha" placeholder="Senha" required />
+            <button type="submit">Entrar</button>
+            <p id="msg"></p>
+        </form>
+
+    </div>
+
+    <script>
+        const form = document.getElementById("loginForm");
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const senha = document.getElementById("senha").value;
+
+            const res = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, senha }),
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                // Salva access token no localStorage para usar depois
+                localStorage.setItem("accessToken", data.accessToken);
+                document.getElementById("msg").innerText = JSON.stringify(data, null, 2);
+                alert("Login ok!");
+            } else {
+                alert(data.message);
+            }
+        });
+    </script>
+</body>
+
+</html>

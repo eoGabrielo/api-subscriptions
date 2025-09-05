@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel Admin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Área Admin</h1>
+    <button id="getAdmin">Acessar</button>
+    <p id="msg"></p>
+  </div>
+
+  <script>
+    document.getElementById("getAdmin").addEventListener("click", async () => {
+      const token = localStorage.getItem("accessToken");
+      const res = await fetch("/api/admin/dashboard", {
+        headers: { Authorization: "Bearer " + token }
+      });
+
+      const data = await res.json();
+      document.getElementById("msg").innerText = JSON.stringify(data, null, 2);
+    });
+  </script>
+</body>
+</html>

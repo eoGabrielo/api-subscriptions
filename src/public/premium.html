@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Área Premium</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Conteúdo Premium</h1>
+    <button id="getPremium">Acessar</button>
+    <p id="msg"></p>
+  </div>
+
+  <script>
+    document.getElementById("getPremium").addEventListener("click", async () => {
+      const token = localStorage.getItem("accessToken");
+      const res = await fetch("/api/videos/premium-videos", {
+        headers: { Authorization: "Bearer " + token }
+      });
+
+      const data = await res.json();
+      document.getElementById("msg").innerText = JSON.stringify(data, null, 2);
+    });
+  </script>
+</body>
+</html>
