@@ -1,17 +1,27 @@
+//Valida plano e tempo de assinatura e aplica downgrade.
+const User = require("../models/User");
 
-//Valida plano e expiração do plano/assinatura
-function verifySubscription(req, res, next) {
+async function verifySubscription(req, res, next) {
     try {
-        const user = req.user;
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({ message: "Usuário não encontrado" });
+        }
 
         if (user.plan !== "premium") {
-            return res.status(403).json({ message: "Acesso negado: apenas usuários premium", user: user });
+            return res.status(403).json({ message: "Acesso negado: apenas usuários premium" });
         }
 
         if (user.planExpiresAt && new Date(user.planExpiresAt) < new Date()) {
+            // downgrade automático
+            user.plan = "free";
+            user.planExpiresAt = null;
+            await user.save();
+
             return res.status(403).json({
-                message: "Assinatura expirada, renove para continuar.",
-                subscriptionStatus: "Assinatura expirada"
+                message: "Assinatura expirada, você foi movido para o plano gratuito.",
+                subscriptionStatus: "downgraded"
             });
         }
 
