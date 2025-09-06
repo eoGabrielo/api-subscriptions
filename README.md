@@ -95,41 +95,41 @@ Este projeto também conta com um **frontend básico em HTML + CSS simples**, ap
 
 ### 🔗 Acesse no navegador:
 
-- [Registro](http://localhost:5000/register.html)  
+- [Registro] 
   Formulário para criar uma nova conta.  
   - Campos: **nome, e-mail e senha**  
   - Envia requisição `POST /api/auth/register`  
   - Exibe mensagem de sucesso ou erro  
 
-- [Login](http://localhost:5000/login.html)  
+- [Login]
   Formulário de autenticação.  
   - Campos: **e-mail e senha**  
   - Envia requisição `POST /api/auth/login`  
   - Se sucesso → salva o **access token** no `localStorage` e o **refresh token** no cookie HttpOnly  
 
-- [Perfil](http://localhost:5000/me.html)  
+- [Perfil] 
   Página de perfil do usuário autenticado.  
   - Mostra os dados retornados de `GET /api/auth/me` (**nome, e-mail, role, plano e validade da assinatura**)  
   - Caso o token esteja inválido ou expirado → mostra aviso ao usuário  
 
-- [Conteúdo Free](http://localhost:5000/free.html)  
+- [Conteúdo Free]
   Exemplo de conteúdo gratuito (sem necessidade de autenticação ou plano).  
   - Usuários não logados conseguem acessar normalmente  
   - Serve como contraste ao conteúdo premium  
 
-- [Conteúdo Premium](http://localhost:5000/premium.html)  
+- [Conteúdo Premium]
   Conteúdo exclusivo para assinantes **premium**.  
   - Faz requisição para rota protegida por `verifySubscription`  
   - Usuários **free** ou com assinatura expirada → acesso negado  
   - Usuários **premium válidos** → acesso permitido  
 
-- [Área Admin](http://localhost:5000/admin.html)  
+- [Área Admin] 
   Página protegida apenas para administradores.  
   - Requisição para rota com `verifyRole("admin")`  
   - Usuários comuns → acesso negado  
   - Admins → conseguem acessar o painel de administração  
 
-- [Logout](http://localhost:5000/logout.html)  
+- [Logout] 
   Página para encerrar a sessão.  
   - Chama `POST /api/auth/logout`  
   - Remove o token do `localStorage` e o **refresh token** do cookie  
